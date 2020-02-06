@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{0A2656F0-8D5F-4EE4-3ED2-C781922E3C28}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PauseMenu.cs">
+    <Files>
+      <File FileName="Assets/PauseMenu.cs" Line="36" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Tile Movement Tutorial ep6 - BONUS CONTENT" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="PauseMenu.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="f9772eea-5424-41ea-8616-f9d732ce2f84" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

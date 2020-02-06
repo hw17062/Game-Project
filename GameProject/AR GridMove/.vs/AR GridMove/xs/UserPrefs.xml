@@ -1,0 +1,30 @@
+﻿<Properties StartupConfiguration="{82186F3E-BEAA-5983-EA0B-6036AD6E9FAE}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/TileMap.cs">
+    <Files>
+      <File FileName="Assets/Script/Rotator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Script/GridStat.cs" />
+      <File FileName="Assets/Script/GridBehaviour.cs" />
+      <File FileName="Assets/TileType.cs" />
+      <File FileName="Assets/TileMap.cs" Line="5" Column="21" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AR GridMove" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Script" expanded="True" />
+              <Node name="TileMap.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8c75e018-3b14-43b0-8ae2-81bcb9c3dccb" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
