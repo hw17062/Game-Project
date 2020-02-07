@@ -107,7 +107,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
+        PhotonNetwork.Destroy(photonView);
         PhotonNetwork.LeaveRoom();
+        Application.Quit();
     }
 
 
