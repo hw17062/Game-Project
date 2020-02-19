@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{DC94E1EC-68A5-FC18-E22B-9A0ED4E6A787}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Unit.cs">
+    <Files>
+      <File FileName="Assets/TileMap.cs" Line="1" Column="1" />
+      <File FileName="Assets/Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets/ClickableTile.cs" />
+      <File FileName="Assets/OptionsMenu.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Menu+" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Unit.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8c75e018-3b14-43b0-8ae2-81bcb9c3dccb" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
