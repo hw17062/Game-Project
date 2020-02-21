@@ -85,7 +85,7 @@ public class SimpleDemo : MonoBehaviour {
 			else
 			{
 				//display the card info
-				CardDisplay.text = card.cardname + " cost: " + card.cost;
+				CardDisplay.text = card.cardname + " ap: " + card.ap + " type: " + card.type;
 			}
 
 			// Feedback

@@ -33,7 +33,7 @@ public class database
         {
             Debug.Log("Find " + c + " cards: " + cardName);
             var card = r.First<Card>(); // get the first card result from collection
-            Debug.Log(card.cardname + " cost: " + card.cost);
+            Debug.Log(card.cardname + " ap: " + card.ap + "type: " + card.type);
             return card;
         }
         else
