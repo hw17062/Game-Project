@@ -64,6 +64,40 @@ public class SimpleDemo : MonoBehaviour {
 
 	#region UI Buttons
 
+	public void ClickRegisterPlayer()
+	{
+		
+		if (BarcodeScanner == null)
+		{
+			Log.Warning("No valid camera - Click Start");
+			return;
+		}
+
+		// Start Scanning
+		BarcodeScanner.Scan((barCodeType, barCodeValue) => {
+			BarcodeScanner.Stop();
+			TextHeader.text = "Found: " + barCodeType + " / " + barCodeValue;
+            //try to find card in database
+            switch (barCodeValue)
+            {
+				case "Player-Ranger": CardDisplay.text = "Ranger"; break;
+				case "Player-Barbarian": CardDisplay.text = "Barbarian"; break;
+				case "Player-Wizard": CardDisplay.text = "Wizard"; break;
+				case "Player-Cleric": CardDisplay.text = "Cleric"; break;
+				default: CardDisplay.text = "Player not found"; break;
+
+			}
+			
+
+			// Feedback
+			Audio.Play();
+
+            #if UNITY_ANDROID || UNITY_IOS
+			            Handheld.Vibrate();
+            #endif
+		});
+	}
+
 	public void ClickStart()
 	{
 		if (BarcodeScanner == null)
@@ -108,6 +142,7 @@ public class SimpleDemo : MonoBehaviour {
 		// Stop Scanning
 		BarcodeScanner.Stop();
 	}
+
 
 	public void ClickBack()
 	{
