@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{959CF7D4-4C34-0BB2-D830-984FC737B2DF}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Networking/GameManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Networking/Launcher.cs" Line="6" Column="14" />
+      <File FileName="Assets/Scripts/Networking/GameManager.cs" Line="133" Column="9" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MasterClient" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="0222d642-8838-4cad-9a36-29343fe9a2df" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

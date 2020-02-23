@@ -8,8 +8,7 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
-
-
+using ExitGames.Client.Photon;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -22,6 +21,40 @@ public class GameManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Photon Callbacks
+
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+
+        if (eventCode == 1)
+        {
+            Debug.Log("Hope");
+        }
+
+        //if (eventCode == MoveUnitsToTargetPositionEvent)
+        //{
+        //    object[] data = (object[])photonEvent.CustomData;
+
+        //    Vector3 targetPosition = (Vector3)data[0];
+
+        //    for (int index = 1; index < data.Length; ++index)
+        //    {
+        //        int unitId = (int)data[index];
+
+        //        UnitList[unitId].TargetPosition = targetPosition;
+        //    }
+        //}
+    }
+
+    public override void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public override void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
 
 
     public override void OnPlayerEnteredRoom(Player other)
@@ -107,9 +140,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-        PhotonNetwork.Destroy(photonView);
+        //PhotonNetwork.Destroy(photonView);
         PhotonNetwork.LeaveRoom();
-        Application.Quit();
+        //Application.Quit();
     }
 
 
