@@ -13,6 +13,24 @@ using ExitGames.Client.Photon;
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
+    #region Event Codes
+    //THIS REGION NEEDS TO BE THE SAME ACROSS ALL SCRIPTS THAT USE EVENT HANDLING
+    //CURRENTLY: Launcher.cs, GameManager.cs in ARGRID and GameManager.cs in master client
+
+    const byte kickCode = 1;
+    const byte acceptPlayerCode = 2;
+    const byte moveCode = 3;
+    const byte msgCode = 4;
+
+    #endregion
+
+    #region Private Fields
+
+    private GameObject myObj;
+    private Unit myUnit;
+
+    #endregion
+
     #region Public Fields
 
     [Tooltip("The prefab to use for representing the player")]
@@ -48,11 +66,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnEnable()
     {
+        base.OnEnable(); //DEFINITIELY NOT THIS ONE
         PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
     }
 
     public override void OnDisable()
     {
+        base.OnDisable(); //OH NO YOU DON'T
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
 
@@ -99,8 +119,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Private Methods
 
+    private void Awake()
+    {
+        
+    }
+
     private void Start()
     {
+        //Debug.Log("Start");
         if (playerPrefab == null)
         {
             Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -112,8 +138,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (GridObserver.LocalPlayerInstance == null)
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                myObj = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                myUnit = myObj.GetComponent<Unit>();
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(5, 1, 5), Quaternion.identity, 0);
             }
             else
             {

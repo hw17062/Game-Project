@@ -23,10 +23,10 @@ public class TileMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ImageTarg = GameObject.Find("ImageTarget");
+        //ImageTarg = GameObject.Find("ImageTarget");
 
-        offsetX = mapSizeX / 2;
-        offsetZ = mapSizeZ / 2;
+        //offsetX = mapSizeX / 2;
+        //offsetZ = mapSizeZ / 2;
 
 
         ////selectedUnit.GetComponent<Unit>().tileX = (int)selectedUnit.transform.position.x;
@@ -40,6 +40,10 @@ public class TileMap : MonoBehaviour
 
     public void Init()
     {
+        ImageTarg = GameObject.Find("ImageTarget");
+
+        offsetX = mapSizeX / 2;
+        offsetZ = mapSizeZ / 2;
         //ImageTarg = GameObject.Find("ImageTarget");
 
         //offsetX = mapSizeX / 2;
@@ -173,8 +177,8 @@ public class TileMap : MonoBehaviour
             for (int z = 0; z < mapSizeZ; z++)
             {
                 TileType tt = tileTypes[tiles[x, z]];
-                GameObject go = (GameObject)Instantiate(tt.tileVisualPrefab, new Vector3(x-offsetX, 0, z-offsetZ), Quaternion.identity);
-
+                GameObject go = (GameObject)Instantiate(tt.tileVisualPrefab, new Vector3(x - offsetX, 0, z - offsetZ), Quaternion.identity);
+                
                 go.transform.SetParent(ImageTarg.transform);
 
                 ClickableTile ct = go.GetComponent<ClickableTile>();
