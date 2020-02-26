@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
                 SendOptions sendOptions = new SendOptions { Reliability = true };
                 PhotonNetwork.RaiseEvent(acceptPlayerCode, content, raiseEventOptions, sendOptions);
+                GameObject.Find("Unit (Clone)").SetActive(false);
                 //GameObject temp;
                 //temp = PhotonNetwork.Instantiate(warrior.name, new Vector3(0,0,0), new Quaternion(0,0,0,0));
                 //players[other.NickName].setRpc(temp);

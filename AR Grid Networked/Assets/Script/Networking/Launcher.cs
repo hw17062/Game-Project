@@ -78,7 +78,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void OnEvent(EventData photonEvent)
     {
-        int a = 1;
         byte eventCode = photonEvent.Code;
         if (!isActive)
         {
