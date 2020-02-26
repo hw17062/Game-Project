@@ -24,10 +24,10 @@ public class TileMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ImageTarg = GameObject.Find("ImageTarget");
+        //ImageTarg = GameObject.Find("ImageTarget");
 
-        offsetX = mapSizeX / 2;
-        offsetZ = mapSizeZ / 2;
+        //offsetX = mapSizeX / 2;
+        //offsetZ = mapSizeZ / 2;
 
 
         ////selectedUnit.GetComponent<Unit>().tileX = (int)selectedUnit.transform.position.x;
@@ -41,6 +41,10 @@ public class TileMap : MonoBehaviour
 
     public void Init()
     {
+        ImageTarg = GameObject.Find("ImageTarget");
+
+        offsetX = mapSizeX / 2;
+        offsetZ = mapSizeZ / 2;
         //ImageTarg = GameObject.Find("ImageTarget");
 
         //offsetX = mapSizeX / 2;
@@ -535,7 +539,7 @@ public class TileMap : MonoBehaviour
         //return ImageTarg.transform.position + new Vector3(x - offsetX, 1, z - offsetZ);
         if(tiles[x, z] == 5)
             return floor[x, z].transform.position + new Vector3(0, 0.5f, 0);
-        else 
+        else
             return floor[x, z].transform.position + new Vector3(0, 1, 0);
     }
 

@@ -8,20 +8,75 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
-
-
+using ExitGames.Client.Photon;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+
+    #region Event Codes
+    //THIS REGION NEEDS TO BE THE SAME ACROSS ALL SCRIPTS THAT USE EVENT HANDLING
+    //CURRENTLY: Launcher.cs, GameManager.cs in ARGRID and GameManager.cs in master client
+
+    const byte kickCode = 1;
+    const byte acceptPlayerCode = 2;
+    const byte moveCode = 3;
+    const byte msgCode = 4;
+
+    #endregion
+
+    #region Private Fields
+
+    private GameObject myObj;
+    private Unit myUnit;
+
+    #endregion
 
     #region Public Fields
 
     [Tooltip("The prefab to use for representing the player")]
     public GameObject playerPrefab;
 
+    public bool instState = true;
+
     #endregion
 
     #region Photon Callbacks
+
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+
+        if (eventCode == 1)
+        {
+            Debug.Log("Hope");
+        }
+
+        //if (eventCode == MoveUnitsToTargetPositionEvent)
+        //{
+        //    object[] data = (object[])photonEvent.CustomData;
+
+        //    Vector3 targetPosition = (Vector3)data[0];
+
+        //    for (int index = 1; index < data.Length; ++index)
+        //    {
+        //        int unitId = (int)data[index];
+
+        //        UnitList[unitId].TargetPosition = targetPosition;
+        //    }
+        //}
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable(); //DEFINITIELY NOT THIS ONE
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable(); //OH NO YOU DON'T
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
 
 
     public override void OnPlayerEnteredRoom(Player other)
@@ -66,8 +121,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Private Methods
 
+    private void Awake()
+    {
+
+    }
+
     private void Start()
     {
+        if (!instState) return;
+        //Debug.Log("Start");
         if (playerPrefab == null)
         {
             Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -78,9 +140,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             if (GridObserver.LocalPlayerInstance == null)
             {
+                Debug.Log("Instantiating");
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                myObj = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                myUnit = myObj.GetComponent<Unit>();
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(5, 1, 5), Quaternion.identity, 0);
             }
             else
             {
@@ -107,10 +171,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
+
+        //PhotonNetwork.Destroy(photonView);
         PhotonNetwork.LeaveRoom();
+        //Application.Quit();
     }
 
 
     #endregion
 }
-

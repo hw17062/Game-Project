@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{1F16BDEA-8D76-2005-85EA-0C62156280B1}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/InvisWall/invisibleMask.shader">
+    <Files>
+      <File FileName="Assets/InvisWall/HideMe.cs" Line="5" Column="121" />
+      <File FileName="Assets/InvisWall/invisibleMask.shader" Line="3" Column="127" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TransparentWallTest" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="7bdc494a-cc68-4fc4-92f4-e78bc339dfb8" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
