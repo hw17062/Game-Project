@@ -30,6 +30,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// Typically this is used for the OnConnectedToMaster() callback.
     /// </summary>
     bool isConnecting;
+    bool isActive = true;
     //bool alreadyScanning = false;
 
     //ScanCards scan;
@@ -47,11 +48,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     #endregion
 
-    public GameObject cam;
+    //public GameObject cam;
     public GameObject canv;
     public GameObject connectingCanv;
-    public GameObject dirLight;
+    //public GameObject dirLight;
     public GameObject events;
+    //public GameObject gameManager;
 
     //public Camera ar;
     //public Camera qr;
@@ -76,19 +78,28 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void OnEvent(EventData photonEvent)
     {
+        int a = 1;
         byte eventCode = photonEvent.Code;
-
+        if (!isActive)
+        {
+            return;
+        }
         switch (eventCode)
         {
             case acceptPlayerCode:
                 Debug.Log("Accepted");
-                Destroy(cam);
-                Destroy(dirLight);
-                Destroy(canv);
-                Destroy(connectingCanv);
-                Destroy(events);
-                SceneManager.LoadScene("ARGRID", LoadSceneMode.Additive);
-                Destroy(gameObject);
+                //Destroy(cam);
+                //Destroy(dirLight);
+                //Destroy(canv);
+                //Destroy(connectingCanv);
+                //Destroy(events);
+                canv.SetActive(false);
+                connectingCanv.SetActive(false);
+                events.SetActive(false);
+                Instantiate(Resources.Load("GameManager"), new Vector3(0,0,0), new Quaternion(0,0,0,0));
+                isActive = false;
+                //SceneManager.LoadScene("ARGRID", LoadSceneMode.Additive);
+                //Destroy(gameObject);
                 break;
             case kickCode:
                 Debug.Log("Rejected");
@@ -211,7 +222,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         //ar.enabled = true;
         //canv = GameObject.Find("Canvas");
         //scan = qr.GetComponent<ScanCards>();
-        //connectingCanv.SetActive(false);
+        connectingCanv.SetActive(false);
     }
 
 

@@ -1,10 +1,12 @@
 ﻿<Properties StartupConfiguration="{0E5A8E69-8AA4-CE38-8C0F-436B9634ED60}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Networking/GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Grid/TileMap.cs">
     <Files>
-      <File FileName="Assets/Script/Networking/Launcher.cs" Line="39" Column="5" />
+      <File FileName="Assets/Script/Networking/Launcher.cs" Line="97" Column="41" />
       <File FileName="Assets/Script/ScanCards.cs" />
       <File FileName="Assets/Script/Grid/TileType.cs" />
-      <File FileName="Assets/Script/Networking/GameManager.cs" Line="16" Column="5" />
+      <File FileName="Assets/Script/Networking/GameManager.cs" Line="140" Column="44" />
+      <File FileName="Assets/Script/Grid/Unit.cs" Line="1" Column="1" />
+      <File FileName="Assets/Script/Grid/TileMap.cs" Line="3" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,10 +14,10 @@
           <Node name="AR Grid Networked" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Script" expanded="True">
-                <Node name="Grid" expanded="True" />
-                <Node name="Networking" expanded="True">
-                  <Node name="GameManager.cs" selected="True" />
+                <Node name="Grid" expanded="True">
+                  <Node name="TileMap.cs" selected="True" />
                 </Node>
+                <Node name="Networking" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -25,7 +27,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="6f125086-3030-40a0-a47e-14a4fb37f02a" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9c85db4b-ce66-4009-9e15-24f85fcaba64" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Tooltip("The prefab to use for representing the player")]
     public GameObject playerPrefab;
 
+    public bool instState = true;
+
     #endregion
 
     #region Photon Callbacks
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        if (!instState) return;
         //Debug.Log("Start");
         if (playerPrefab == null)
         {
@@ -137,6 +140,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             if (GridObserver.LocalPlayerInstance == null)
             {
+                Debug.Log("Instantiating");
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                 myObj = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
                 myUnit = myObj.GetComponent<Unit>();
