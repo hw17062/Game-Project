@@ -16,9 +16,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Private Serializable Fields
 
-    //[SerializeField]
-    //GameObject classPrefab;
-
     #endregion
 
     #region Private Fields
@@ -35,15 +32,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private int validPlayerCount = 0;
 
+    //Dictionary to store currently active players
     private Dictionary<string, ClientStat> players = new Dictionary<string, ClientStat>() { //Could store player IDs instead
         {"Warrior", new ClientStat()},
         {"Ranger", new ClientStat()},
         {"Mage", new ClientStat()},
         {"Cleric", new ClientStat()},
         {"DungeonMaster", new ClientStat()},
-        {"MasterClient", new ClientStat()}
+        {"MasterClient", new ClientStat()} //Extra entry in case we needed to store out status for some reason
     };
 
+    //Stores turn order, currently implemented as a queue as we order turns by first connection goes first
     private Queue<string> turnOrder = new Queue<string>();
 
     #endregion
@@ -51,7 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     #region Event Codes
     //THIS REGION NEEDS TO BE THE SAME ACROSS ALL SCRIPTS THAT USE EVENT HANDLING
     //CURRENTLY: Launcher.cs, GameManager.cs in ARGRID and GameManager.cs in master client
-
+    //Variables are const as they are sued in switch case statements, feel free to change to if else
     const byte kickCode = 1;
     const byte acceptPlayerCode = 2;
     const byte moveCode = 3;
@@ -59,24 +58,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion
 
-    //#region RPC Methods
-
-    //[PunRPC]
-    //void test(string henlo)
-    //{
-    //    Debug.Log(henlo);
-    //}
-
-    //#endregion
-
     #region Public Fields
-
-    //[Tooltip("The prefab to use for representing the player")]
-    //public GameObject warrior;
-    //public GameObject ranger;
-    //public GameObject mage;
-    //public GameObject cleric;
-    //public GameObject dm;
 
     #endregion
 
@@ -84,23 +66,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        //Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
-
+        //Sanity check that tthis client initiated the server
         if (PhotonNetwork.IsMasterClient)
         {
-            //Debug.Log(other.NickName);
             ClientStat value;
-            if (!players.TryGetValue(other.NickName, out value))
+            if (!players.TryGetValue(other.NickName, out value)) //Test if player with connecting nickname is in list of valid players
             {
-                //Debug.Log("Out1");
                 PhotonNetwork.CloseConnection(other); //Boot player for invalid name
                 return;
             }
-            //Debug.Log("1");
-            if (value.getPres())
+            if (value.getPres()) //Test if the name is already taken
             {
-                //Debug.Log("Out2");
+                //This code raises a network event that will boot the player
                 object[] content = new object[] { other.UserId, other.NickName };
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                 SendOptions sendOptions = new SendOptions { Reliability = true };
@@ -109,35 +87,30 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                //Debug.Log("2");
+                //Update fact that class has been taken
                 players[other.NickName] = new ClientStat(other.NickName);
-                //Debug.Log("3");
                 validPlayerCount++;
                 if (!other.NickName.Equals(myName)) turnOrder.Enqueue(other.NickName);
                 Debug.Log(other.NickName);
 
+                //Raise a network event that accepts the player
                 object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
                 SendOptions sendOptions = new SendOptions { Reliability = true };
                 PhotonNetwork.RaiseEvent(acceptPlayerCode, content, raiseEventOptions, sendOptions);
-                GameObject.Find("Unit (Clone)").SetActive(false);
-                //GameObject temp;
-                //temp = PhotonNetwork.Instantiate(warrior.name, new Vector3(0,0,0), new Quaternion(0,0,0,0));
-                //players[other.NickName].setRpc(temp);
             }
         }
-
+        //Maybe add code to leave room if we aren't original master client?
     }
 
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        //Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
-
 
         ClientStat value;
         if (players.TryGetValue(other.NickName, out value)) //Sanity check, to make sure we won't crash part way through
         {
+            //Free up class taken by leaving player
             players[other.NickName].setPres(false);
             validPlayerCount--;
         }
@@ -148,7 +121,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        //SceneManager.LoadScene(0);
+
     }
 
 
@@ -165,81 +138,28 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        //StartCoroutine(ExampleCoroutine());
-        //if (playerPrefab == null)
-        //{
-        //    Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-        //}
-        //else
-        //{
-        //    //Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
-        //    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        //    if (GridObserver.LocalPlayerInstance == null)
-        //    {
-        //        Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-        //        // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        //        PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(5, 1, 5), Quaternion.identity, 0);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-        //    }
-        //}
+        
     }
 
     private void Update()
     {
-        //string currentPlayer = turnOrder.Peek();
-        //if (players[currentPlayer].getAP() == 0) //If current player out of AP move them to back of queue
-        //{
-        //    turnOrder.Dequeue();
-        //    turnOrder.Enqueue(currentPlayer);
-        //}
-        //Debug.Log(turnOrder.Count);
-        //Debug.Log(scan.CamReady);
         if ((!alreadyScanning) && scan.CamReady && (turnOrder.Count > 0))
         {
 
             scan.StartScan(this);
             alreadyScanning = true;
         }
-        //this.photonView.RPC("test", RpcTarget.All, "Hot Diggity Damn");
-        //Debug.Log(card.cardname);
-        //if (card == null) return; //Invalid card or Scanner isn't working
-        //Card logic, validate cards
-        //if (!card.type.Equals(currentPlayer) && !card.type.Equals("basic")) return; //Wrong card for current player
-        //if (players[currentPlayer].getAP() < card.ap)
-        //{
-        //    //Maybe add RPC call to inform player
-        //    return; //Not enough AP for this card
-        //}
-        ////RPC call, sending card to players
-        //players[currentPlayer].setAP(players[currentPlayer].getAP() - card.ap); //Adjust AP for card just used
     }
 
+    //Function for logic to handle scanned cards
     private void CardHandle(Card card)
     {
-        //string currentPlayer = turnOrder.Peek();
-        //if (players[currentPlayer].getAP() == 0) //If current player out of AP move them to back of queue
-        //{
-        //    turnOrder.Dequeue();
-        //    turnOrder.Enqueue(currentPlayer);
-        //    alreadyScanning = false;
-        //    return;
-        //}
         Debug.Log(card.cardname);
         if (card == null)
         {
             alreadyScanning = false;
             return; //Invalid card or Scanner isn't working
         }
-        ////Card logic, validate cards
-        //if (!card.type.Equals(currentPlayer) && !card.type.Equals("basic")) return; //Wrong card for current player
-        //if (players[currentPlayer].getAP() < card.ap)
-        //{
-        //    //Maybe add RPC call to inform player
-        //    return; //Not enough AP for this card
-        //}
     }
 
     #endregion
@@ -254,7 +174,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-        //RPC to force kick all players when masterClient leaves
+        //Will want to raise an event that tells all players to leave room when
+        //master client leaves
         PhotonNetwork.LeaveRoom();
     }
 

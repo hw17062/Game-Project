@@ -42,28 +42,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Photon Callbacks
 
+
+    //Test event handling code
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
 
-        if (eventCode == 1)
+        if (eventCode == 4)
         {
             Debug.Log("Hope");
         }
 
-        //if (eventCode == MoveUnitsToTargetPositionEvent)
-        //{
-        //    object[] data = (object[])photonEvent.CustomData;
-
-        //    Vector3 targetPosition = (Vector3)data[0];
-
-        //    for (int index = 1; index < data.Length; ++index)
-        //    {
-        //        int unitId = (int)data[index];
-
-        //        UnitList[unitId].TargetPosition = targetPosition;
-        //    }
-        //}
     }
 
     public override void OnEnable()
@@ -81,31 +70,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        //Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
 
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-
-
-        //    LoadArena();
-        //}
     }
 
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        //Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
 
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
-
-
-        //    LoadArena();
-        //}
     }
 
     /// <summary>
@@ -113,7 +84,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        //SceneManager.LoadScene(0);
+
     }
 
 
@@ -128,15 +99,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        //Safety measure against duplicate GameManagers
         if (!instState) return;
-        //Debug.Log("Start");
+
         if (playerPrefab == null)
         {
             Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
         }
         else
         {
-            //Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             if (GridObserver.LocalPlayerInstance == null)
             {
@@ -153,16 +124,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    //void LoadArena()
-    //{
-    //    if (!PhotonNetwork.IsMasterClient)
-    //    {
-    //        Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
-    //    }
-    //    Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-    //    PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
-    //}
-
 
     #endregion
 
@@ -171,10 +132,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-
-        //PhotonNetwork.Destroy(photonView);
         PhotonNetwork.LeaveRoom();
-        //Application.Quit();
     }
 
 

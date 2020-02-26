@@ -17,9 +17,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private byte maxPlayersPerRoom = 6;
 
-    //[SerializeField]
-    //GameObject gameManagerPrefab;
-
     #endregion
 
     #region Private Fields
@@ -31,9 +28,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     bool isConnecting;
     bool isActive = true;
-    //bool alreadyScanning = false;
-
-    //ScanCards scan;
 
     #endregion
 
@@ -48,26 +42,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     #endregion
 
-    //public GameObject cam;
     public GameObject canv;
     public GameObject connectingCanv;
-    //public GameObject dirLight;
     public GameObject events;
-    //public GameObject gameManager;
-
-    //public Camera ar;
-    //public Camera qr;
-
-    //#region Public Fields
-
-    //[Tooltip("The Ui Panel to let the user enter name, connect and play")]
-    //[SerializeField]
-    //private GameObject controlPanel;
-    //[Tooltip("The UI Label to inform the user that the connection is in progress")]
-    //[SerializeField]
-    //private GameObject progressLabel;
-
-    //#endregion
 
     /// <summary>
     /// This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
@@ -76,6 +53,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     #region MonoBehaviorPunCallbacks Callbacks
 
+
+    //Event Handling for accepted to room, and kicked from room
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
@@ -86,51 +65,22 @@ public class Launcher : MonoBehaviourPunCallbacks
         switch (eventCode)
         {
             case acceptPlayerCode:
+                //Join request was accepted, finish joining
                 Debug.Log("Accepted");
-                //Destroy(cam);
-                //Destroy(dirLight);
-                //Destroy(canv);
-                //Destroy(connectingCanv);
-                //Destroy(events);
                 canv.SetActive(false);
                 connectingCanv.SetActive(false);
                 events.SetActive(false);
                 Instantiate(Resources.Load("GameManager"), new Vector3(0,0,0), new Quaternion(0,0,0,0));
                 isActive = false;
-                //SceneManager.LoadScene("ARGRID", LoadSceneMode.Additive);
-                //Destroy(gameObject);
                 break;
             case kickCode:
+                //Join request was rejected, reset attempt
                 Debug.Log("Rejected");
                 canv.SetActive(true);
                 connectingCanv.SetActive(false);
                 //Add message here, which classes are free? Is room full?
                 break;
         }
-
-        //if (eventCode == acceptPlayerCode)
-        //{
-        //    Destroy(cam);
-        //    Destroy(dirLight);
-        //    Destroy(canv);
-        //    Destroy(events);
-        //    SceneManager.LoadScene("ARGRID", LoadSceneMode.Additive);
-        //    Destroy(gameObject);
-        //}
-
-        //if (eventCode == MoveUnitsToTargetPositionEvent)
-        //{
-        //    object[] data = (object[])photonEvent.CustomData;
-
-        //    Vector3 targetPosition = (Vector3)data[0];
-
-        //    for (int index = 1; index < data.Length; ++index)
-        //    {
-        //        int unitId = (int)data[index];
-
-        //        UnitList[unitId].TargetPosition = targetPosition;
-        //    }
-        //}
     }
 
     public override void OnEnable()
@@ -150,8 +100,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-        //Debug.Log("Called");
         // we don't want to do anything if we are not attempting to join a room.
         // this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
         // we don't want to do anything.
@@ -162,21 +110,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
-    //public override void OnConnectedToMasterFailed()
-    //{
-
-    //}
-
-    //public override void OnDisconnected(DisconnectCause cause)
-    //{
-    //    progressLabel.SetActive(false);
-    //    controlPanel.SetActive(true);
-    //    Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
-    //}
-
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+        Debug.Log("Random Join Failed, waiting for room");
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
         //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
@@ -185,25 +121,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-        // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
-        //if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-        //{
-        //    Debug.Log("We load the 'Room for 1' ");
-
-
-        //    // #Critical
-        //    // Load the Room Level.
-        //    PhotonNetwork.LoadLevel("Room for 1");
-        //}
-        //Instantiate(gameManagerPrefab);
-        //Destroy(cam);
-        //Destroy(dirLight);
-        //Destroy(canv);
-        //Destroy(connectingCanv);
-        //Destroy(events);
-        //SceneManager.LoadScene("ARGRID", LoadSceneMode.Additive);
-        //Destroy(gameObject);
+        //Irrelevant as we now use the accepted network event to handle having joined a room
     }
 
     #endregion
@@ -213,14 +131,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     void Awake()
     {
-        // #Critical
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        //PhotonNetwork.AutomaticallySyncScene = true;
-        //cam = GameObject.Find("ARCamera");
-        //qr.enabled = false;
-        //ar.enabled = true;
-        //canv = GameObject.Find("Canvas");
-        //scan = qr.GetComponent<ScanCards>();
+        //Hide connecting screen
         connectingCanv.SetActive(false);
     }
 
@@ -230,21 +141,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     void Start()
     {
-        //progressLabel.SetActive(false);
-        //controlPanel.SetActive(true);
-        //PhotonNetwork.NickName = "Warrior";
-        //Connect();
-        //PhotonNetwork.ConnectUsingSettings();
-        //AutoJoin thing
+        
     }
 
     private void Update()
     {
-        //if (!alreadyScanning && scan.CamReady)
-        //{
-        //    alreadyScanning = true;
-        //    scan.RegisterPlayer(this);
-        //}
+        
     }
 
 
@@ -257,10 +159,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         // keep track of the will to join a room, because when we come back from the game we will get a callback that we are connected, so we need to know what to do then
         isConnecting = true;
+        //Show player that connection attempt is being made
         connectingCanv.SetActive(true);
         canv.SetActive(false);
-        //progressLabel.SetActive(true);
-        //controlPanel.SetActive(false);
         // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
         if (PhotonNetwork.IsConnected)
         {
@@ -275,26 +176,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+    //Called by canvas buttons, sets player nickname and attempts to join
     public void ClassSelected(string job)
     {
         PhotonNetwork.NickName = job;
         Connect();
     }
-
-    //public void scanResult(string job)
-    //{
-    //    if (job.Equals("fail"))
-    //    {
-    //        alreadyScanning = false;
-    //        return;
-    //    }
-    //    PhotonNetwork.NickName = job;
-    //    ar.enabled = true;
-    //    qr.enabled = false;
-    //    Destroy(canv);
-    //    Destroy(qr.gameObject);
-    //    Connect();
-    //}
 
 
 }

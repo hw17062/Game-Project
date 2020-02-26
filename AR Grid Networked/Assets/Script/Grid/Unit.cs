@@ -50,11 +50,6 @@ public class Unit : MonoBehaviourPun
         {
             transform.position = Vector3.Lerp(transform.position, GameObject.Find("Map").GetComponent<TileMap>().TileCoordToWorldCoord(tileX, tileZ), 5f * Time.deltaTime);
         }
-        //transform.position = map.TileCoordToWorldCoord(tileX, tileZ);
-        //GameObject newPar = map.NewLoc(tileX, tileZ);
-        //this.transform.position = newPar.transform.position + new Vector3(0, 1, 0);
-        //this.transform.SetParent(ImageTarg.transform, false);
-        //this.transform.position += new Vector3(0, 1, 0);
     }
 
     void AdvancePathing()

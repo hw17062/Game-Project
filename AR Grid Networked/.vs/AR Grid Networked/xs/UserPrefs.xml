@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{0E5A8E69-8AA4-CE38-8C0F-436B9634ED60}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/Networking/Launcher.cs">
     <Files>
-      <File FileName="Assets/Script/Networking/Launcher.cs" Line="223" Column="47" />
+      <File FileName="Assets/Script/Networking/Launcher.cs" Line="57" Column="64" />
       <File FileName="Assets/Script/ScanCards.cs" />
       <File FileName="Assets/Script/Grid/TileType.cs" />
-      <File FileName="Assets/Script/Networking/GameManager.cs" />
+      <File FileName="Assets/Script/Networking/GameManager.cs" Line="51" Column="27" />
       <File FileName="Assets/Script/Grid/Unit.cs" />
       <File FileName="Assets/Script/Grid/TileMap.cs" />
     </Files>
