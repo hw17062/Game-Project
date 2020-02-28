@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     const byte moveCode = 3;
     const byte msgCode = 4;
     const byte nextTurnCode = 5;
+    const byte cardScannedCode = 6;
+    const byte startScanCode = 7;
+    const byte stopScanCode = 8;
 
     #endregion
 
@@ -79,6 +82,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             case nextTurnCode:
                 data = (object[])photonEvent.CustomData;
                 NextTurn();
+                break;
+            case startScanCode:
+                scan.StartScan(this);
+                break;
+            case stopScanCode:
+                scan.StopScan();
                 break;
         }
 
@@ -177,12 +186,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if ((!alreadyScanning) && scan.CamReady && (turnOrder.Count > 0))
-        {
+        //if ((!alreadyScanning) && scan.CamReady && (turnOrder.Count > 0))
+        //{
 
-            scan.StartScan(this);
-            alreadyScanning = true;
-        }
+        //    scan.StartScan(this);
+        //    alreadyScanning = true;
+        //}
     }
 
     private void NextTurn()
@@ -198,12 +207,20 @@ public class GameManager : MonoBehaviourPunCallbacks
     //Function for logic to handle scanned cards
     private void CardHandle(Card card)
     {
-        Debug.Log(card.cardname);
-        if (card == null)
+        string cardName = "Invalid Card";
+        //Debug.Log(card.cardname);
+        if (card != null)
         {
-            alreadyScanning = false;
-            return; //Invalid card or Scanner isn't working
+            cardName = card.cardname;
+            //alreadyScanning = false;
+            //return; //Invalid card or Scanner isn't working
         }
+        Debug.Log(cardName);
+        object[] content = new object[] { cardName }; //Send which user should consider this event, and set their AP
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(cardScannedCode, content, raiseEventOptions, sendOptions);
+        scan.StopScan();
     }
 
     #endregion

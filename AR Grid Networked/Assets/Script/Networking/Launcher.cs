@@ -40,6 +40,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     const byte moveCode = 3;
     const byte msgCode = 4;
     const byte nextTurnCode = 5;
+    const byte cardScannedCode = 6;
+    const byte startScanCode = 7;
+    const byte stopScanCode = 8;
 
     #endregion
 

@@ -17,6 +17,9 @@ public class SendCode : MonoBehaviour
     const byte moveCode = 3;
     const byte msgCode = 4;
     const byte nextTurnCode = 5;
+    const byte cardScannedCode = 6;
+    const byte startScanCode = 7;
+    const byte stopScanCode = 8;
 
     #endregion
 
@@ -26,6 +29,22 @@ public class SendCode : MonoBehaviour
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent(nextTurnCode, content, raiseEventOptions, sendOptions);
+    }
+
+    public void startScan()
+    {
+        object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(startScanCode, content, raiseEventOptions, sendOptions);
+    }
+
+    public void stopScan()
+    {
+        object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(stopScanCode, content, raiseEventOptions, sendOptions);
     }
 
     // Start is called before the first frame update

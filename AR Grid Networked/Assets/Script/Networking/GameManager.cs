@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     const byte moveCode = 3;
     const byte msgCode = 4;
     const byte nextTurnCode = 5;
+    const byte cardScannedCode = 6;
+    const byte startScanCode = 7;
+    const byte stopScanCode = 8;
 
     #endregion
 
@@ -65,6 +68,14 @@ public class GameManager : MonoBehaviourPunCallbacks
                 myUnit.remainingMovement = ap;
                 GameObject text = GameObject.Find("ImageTarget/Canvas/CurPlayer");
                 text.GetComponent<UnityEngine.UI.Text>().text = name;
+                break;
+            case cardScannedCode:
+                Debug.Log("Card Recieved");
+                data = (object[])photonEvent.CustomData;
+                name = (string)data[0];
+                Debug.Log(name);
+                GameObject cardText = GameObject.Find("ImageTarget/Canvas/CardName");
+                cardText.GetComponent<UnityEngine.UI.Text>().text = name;
                 break;
         }
 

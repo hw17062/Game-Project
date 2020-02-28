@@ -138,7 +138,7 @@ public class ScanCards : MonoBehaviour
 		return;
 	}
 
-	public void ClickStop()
+	public void StopScan()
 	{
 		if (BarcodeScanner == null)
 		{
