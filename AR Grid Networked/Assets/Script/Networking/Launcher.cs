@@ -34,17 +34,19 @@ public class Launcher : MonoBehaviourPunCallbacks
     #region Event Codes
     //THIS REGION NEEDS TO BE THE SAME ACROSS ALL SCRIPTS THAT USE EVENT HANDLING
     //CURRENTLY: Launcher.cs, GameManager.cs in ARGRID and GameManager.cs in master client
-
+    //Variables are const as they are sued in switch case statements, feel free to change to if else
     const byte kickCode = 1;
     const byte acceptPlayerCode = 2;
     const byte moveCode = 3;
     const byte msgCode = 4;
+    const byte nextTurnCode = 5;
 
     #endregion
 
     public GameObject canv;
     public GameObject connectingCanv;
     public GameObject events;
+    public GameObject arCanv;
 
     /// <summary>
     /// This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
@@ -58,23 +60,34 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
+        object[] data;
+        string name;
         if (!isActive)
         {
             return;
         }
         switch (eventCode)
         {
+            //Need to add way of determining if authenticate code was meant for this client or not
             case acceptPlayerCode:
                 //Join request was accepted, finish joining
+                data = (object[])photonEvent.CustomData;
+                name = (string)data[1]; //Preliminary verification. What if two people try to join as warrior at same time?
+                if (!name.Equals(PhotonNetwork.NickName)) return;
                 Debug.Log("Accepted");
                 canv.SetActive(false);
                 connectingCanv.SetActive(false);
                 events.SetActive(false);
-                Instantiate(Resources.Load("GameManager"), new Vector3(0,0,0), new Quaternion(0,0,0,0));
+                arCanv.SetActive(true);
+                GameObject temp = (GameObject)Instantiate(Resources.Load("GameManager"), new Vector3(0,0,0), new Quaternion(0,0,0,0));
+                temp.GetComponent<GameManager>().arCanv = arCanv;
                 isActive = false;
                 break;
             case kickCode:
                 //Join request was rejected, reset attempt
+                data = (object[])photonEvent.CustomData;
+                name = (string)data[1]; //Preliminary verification. What if two people try to join as warrior at same time?
+                if (!name.Equals(PhotonNetwork.NickName)) return;
                 Debug.Log("Rejected");
                 canv.SetActive(true);
                 connectingCanv.SetActive(false);
@@ -133,6 +146,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         //Hide connecting screen
         connectingCanv.SetActive(false);
+        arCanv.SetActive(false);
     }
 
 

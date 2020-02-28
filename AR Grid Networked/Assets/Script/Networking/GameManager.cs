@@ -16,11 +16,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     #region Event Codes
     //THIS REGION NEEDS TO BE THE SAME ACROSS ALL SCRIPTS THAT USE EVENT HANDLING
     //CURRENTLY: Launcher.cs, GameManager.cs in ARGRID and GameManager.cs in master client
-
+    //Variables are const as they are sued in switch case statements, feel free to change to if else
     const byte kickCode = 1;
     const byte acceptPlayerCode = 2;
     const byte moveCode = 3;
     const byte msgCode = 4;
+    const byte nextTurnCode = 5;
 
     #endregion
 
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Tooltip("The prefab to use for representing the player")]
     public GameObject playerPrefab;
 
+    public GameObject arCanv;
+
     public bool instState = true;
 
     #endregion
@@ -47,10 +50,22 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
+        object[] data;
+        string name;
+        int ap;
 
-        if (eventCode == 4)
+        switch (eventCode)
         {
-            Debug.Log("Hope");
+            case nextTurnCode:
+                data = (object[])photonEvent.CustomData;
+                name = (string)data[0];
+                //if (!name.Equals(PhotonNetwork.NickName)) return;
+                ap = (int)data[1];
+                myUnit.moveSpeed = ap;
+                myUnit.remainingMovement = ap;
+                GameObject text = GameObject.Find("ImageTarget/Canvas/CurPlayer");
+                text.GetComponent<UnityEngine.UI.Text>().text = name;
+                break;
         }
 
     }
@@ -111,6 +126,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             if (GridObserver.LocalPlayerInstance == null)
             {
+                Debug.Log(PhotonNetwork.NickName);
                 Debug.Log("Instantiating");
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                 myObj = PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));

@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     const byte acceptPlayerCode = 2;
     const byte moveCode = 3;
     const byte msgCode = 4;
+    const byte nextTurnCode = 5;
 
     #endregion
 
@@ -63,6 +64,37 @@ public class GameManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Photon Callbacks
+
+    //Test event handling code
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+        object[] data;
+
+        switch(eventCode)
+        {
+            case moveCode:
+                data = (object[])photonEvent.CustomData;
+                break;
+            case nextTurnCode:
+                data = (object[])photonEvent.CustomData;
+                NextTurn();
+                break;
+        }
+
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable(); //DEFINITIELY NOT THIS ONE
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable(); //OH NO YOU DON'T
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
 
     public override void OnPlayerEnteredRoom(Player other)
     {
@@ -80,7 +112,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 //This code raises a network event that will boot the player
                 object[] content = new object[] { other.UserId, other.NickName };
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
                 SendOptions sendOptions = new SendOptions { Reliability = true };
                 PhotonNetwork.RaiseEvent(kickCode, content, raiseEventOptions, sendOptions);
                 PhotonNetwork.CloseConnection(other); //Boot player for using existing name
@@ -88,16 +120,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             else
             {
                 //Update fact that class has been taken
+                //bool firstPlayer = validPlayerCount == 0;
                 players[other.NickName] = new ClientStat(other.NickName);
                 validPlayerCount++;
                 if (!other.NickName.Equals(myName)) turnOrder.Enqueue(other.NickName);
                 Debug.Log(other.NickName);
 
                 //Raise a network event that accepts the player
-                object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
+                object[] content = new object[] { other.UserId, other.NickName }; // Array contains the target position and the IDs of the selected units
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All }; // You would have to set the Receivers to All in order to receive this event on the local client as well
                 SendOptions sendOptions = new SendOptions { Reliability = true };
                 PhotonNetwork.RaiseEvent(acceptPlayerCode, content, raiseEventOptions, sendOptions);
+                //if (firstPlayer) NextTurn(); //Call initial next turn
             }
         }
         //Maybe add code to leave room if we aren't original master client?
@@ -112,7 +146,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //Free up class taken by leaving player
             players[other.NickName].setPres(false);
-            validPlayerCount--;
+            //validPlayerCount--;
         }
     }
 
@@ -149,6 +183,16 @@ public class GameManager : MonoBehaviourPunCallbacks
             scan.StartScan(this);
             alreadyScanning = true;
         }
+    }
+
+    private void NextTurn()
+    {
+        turnOrder.Enqueue(turnOrder.Dequeue());
+        string next = turnOrder.Peek();
+        object[] content = new object[] { next, players[next].getAP() }; //Send which user should consider this event, and set their AP
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(nextTurnCode, content, raiseEventOptions, sendOptions);
     }
 
     //Function for logic to handle scanned cards

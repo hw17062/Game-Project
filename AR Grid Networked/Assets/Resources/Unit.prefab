@@ -142,6 +142,8 @@ MonoBehaviour:
   tileX: 5
   tileZ: 5
   map: {fileID: 0}
+  moveSpeed: 100000
+  remainingMovement: 100000
 --- !u!114 &-8734388765764176106
 MonoBehaviour:
   m_ObjectHideFlags: 0
