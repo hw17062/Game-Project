@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject arCanv;
 
+    public SendCode comms;
+
     public bool instState = true;
 
     #endregion
@@ -62,7 +64,16 @@ public class GameManager : MonoBehaviourPunCallbacks
             case nextTurnCode:
                 data = (object[])photonEvent.CustomData;
                 name = (string)data[0];
-                //if (!name.Equals(PhotonNetwork.NickName)) return;
+                if (name.Equals(PhotonNetwork.NickName))
+                {
+                    comms.myTurn = true;
+                    myUnit.myTurn = true;
+                }
+                else
+                {
+                    comms.myTurn = false;
+                    myUnit.myTurn = false;
+                }
                 ap = (int)data[1];
                 myUnit.moveSpeed = ap;
                 myUnit.remainingMovement = ap;
@@ -73,7 +84,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 Debug.Log("Card Recieved");
                 data = (object[])photonEvent.CustomData;
                 name = (string)data[0];
-                Debug.Log(name);
+                //Debug.Log(name);
                 GameObject cardText = GameObject.Find("ImageTarget/Canvas/CardName");
                 cardText.GetComponent<UnityEngine.UI.Text>().text = name;
                 break;
@@ -120,7 +131,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-
+        comms = GameObject.Find("Communication").GetComponent<SendCode>();
     }
 
     private void Start()

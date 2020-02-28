@@ -10,6 +10,7 @@ public class Unit : MonoBehaviourPun
     public TileMap map;
     public List<Node> currentPath = null;
 
+    public bool myTurn = true; //Find way to start initial turn
     public int moveSpeed = 100000;
     public float remainingMovement = 100000;
     GameObject ImageTarg;
@@ -25,6 +26,11 @@ public class Unit : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            if (!myTurn)
+            {
+                currentPath = null;
+                return;
+            }
             if (currentPath != null)
             {
                 int currNode = 0;

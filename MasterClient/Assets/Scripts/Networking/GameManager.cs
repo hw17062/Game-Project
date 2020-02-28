@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //Free up class taken by leaving player
             players[other.NickName].setPres(false);
-            //validPlayerCount--;
+            validPlayerCount--;
         }
     }
 
@@ -192,6 +192,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         //    scan.StartScan(this);
         //    alreadyScanning = true;
         //}
+        TurnUpdate();
+    }
+
+    private void TurnUpdate()
+    {
+        string next = turnOrder.Peek();
+        object[] content = new object[] { next, players[next].getAP() }; //Send which user should consider this event, and set their AP
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(nextTurnCode, content, raiseEventOptions, sendOptions);
     }
 
     private void NextTurn()

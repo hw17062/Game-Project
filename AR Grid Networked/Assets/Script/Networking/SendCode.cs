@@ -23,8 +23,12 @@ public class SendCode : MonoBehaviour
 
     #endregion
 
+    public bool myTurn = true;
+
     public void endTurn()
     {
+        Debug.Log(myTurn);
+        if (!myTurn) return;
         object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
@@ -33,6 +37,7 @@ public class SendCode : MonoBehaviour
 
     public void startScan()
     {
+        if (!myTurn) return;
         object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
@@ -41,6 +46,7 @@ public class SendCode : MonoBehaviour
 
     public void stopScan()
     {
+        if (!myTurn) return;
         object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient }; // You would have to set the Receivers to All in order to receive this event on the local client as well
         SendOptions sendOptions = new SendOptions { Reliability = true };
